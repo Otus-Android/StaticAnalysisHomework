@@ -1,0 +1,12 @@
+style:
+  MagicNumber:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - 'Composable'
+OtusRuleSet:
+  ComposeModifierRule:
+    active: true
