@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.jreleaser)
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     `maven-publish`

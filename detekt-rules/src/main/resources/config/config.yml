@@ -1,6 +1,6 @@
 OtusRuleSet:
   ComposeModifierMissingRule:
-    active: true
+    active: false
   GlobalScopeRule:
     active: true
   TopLevelCoroutineInSuspendFunRule:

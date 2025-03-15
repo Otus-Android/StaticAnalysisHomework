@@ -3,10 +3,16 @@ style:
     active: false
   NewLineAtEndOfFile:
     active: false
+
 naming:
   FunctionNaming:
     ignoreAnnotated:
       - 'Composable'
+
 OtusRuleSet:
-  ComposeModifierRule:
+  ComposeModifierMissingRule:
+    active: false
+  GlobalScopeRule:
+    active: true
+  TopLevelCoroutineInSuspendFunRule:
     active: true

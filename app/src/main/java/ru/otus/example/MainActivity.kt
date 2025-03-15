@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.otus.example.ui.theme.LintExampleTheme
 
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<SampleViewModel>()
+    //private val viewModel by viewModels<SampleViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
