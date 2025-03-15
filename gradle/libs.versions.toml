@@ -23,6 +23,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [libraries]
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }

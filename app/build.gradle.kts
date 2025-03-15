@@ -2,11 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.composeCompiler)
-    id("io.gitlab.arturbosch.detekt").version("1.23.7")
+    alias(libs.plugins.detekt)
 }
 
 detekt {
-    toolVersion = "1.23.7"
+    toolVersion = libs.versions.detekt.get()
     config.setFrom(file("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }
@@ -39,12 +39,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
