@@ -22,9 +22,9 @@ java {
     withSourcesJar()
 }
 
-kotlin {
-    jvmToolchain(17)
-}
+//kotlin {
+//    jvmToolchain(17)
+//}
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
