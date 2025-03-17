@@ -12,7 +12,8 @@ class OtusRuleSetProvider : RuleSetProvider {
             ruleSetId,
             listOf(
                 ComposeModifierMissingRule(config),
-                GlobalScopeRule(config)
+                GlobalScopeRule(config),
+                TopLevelCoroutineInSuspendFunRule(config)
             ),
         )
     }

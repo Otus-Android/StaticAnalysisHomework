@@ -12,72 +12,53 @@ internal class GlobalScopeRuleTest(private val env: KotlinCoreEnvironment) {
     private val rule = GlobalScopeRule(Config.empty)
 
     @Test
-    fun `reports launch in suspend fun`() {
+    fun `should report GlobalScope launch`() {
         val code = """
-        import kotlinx.coroutines.CoroutineScope
-        import kotlinx.coroutines.Dispatchers
-
-        suspend fun loadInfo() {
-            CoroutineScope(Dispatchers.Default).launch {
-        
+            import kotlinx.coroutines.delay
+            import kotlinx.coroutines.GlobalScope
+            import kotlinx.coroutines.launch
+            
+            fun loadInfo() {
+                GlobalScope.launch { 
+                    
+                 }
             }
-        }
         """
         val findings = rule.compileAndLintWithContext(env, code)
         findings shouldHaveSize 1
     }
 
     @Test
-    fun `reports async in suspend fun`() {
+    fun `should report GlobalScope async`() {
         val code = """
-        import kotlinx.coroutines.GlobalScope
-        import kotlinx.coroutines.CoroutineScope
-        import kotlinx.coroutines.Dispatchers
-
-        suspend fun loadInfo() {
-            CoroutineScope(Dispatchers.Default).async {
-        
+            import kotlinx.coroutines.delay
+            import kotlinx.coroutines.GlobalScope
+            import kotlinx.coroutines.launch
+            
+            fun loadInfo() {
+                GlobalScope.async { 
+                    
+                 }
             }
-        }
         """
         val findings = rule.compileAndLintWithContext(env, code)
         findings shouldHaveSize 1
     }
 
     @Test
-    fun `no report launch in suspend fun`() {
+    fun `should not report 'val scope = GlobalScope'`() {
         val code = """
-        import kotlinx.coroutines.GlobalScope
-        import kotlinx.coroutines.CoroutineScope
-        import kotlinx.coroutines.Dispatchers
-
-        suspend fun loadInfo() {
-            coroutineScope {
-                launch {}
+            import kotlinx.coroutines.CoroutineScope
+            import kotlinx.coroutines.GlobalScope
+            
+            fun loadInfo(scope: CoroutineScope) = Unit
+            
+            fun fetchData() {
+                val scope = GlobalScope
+                loadInfo(scope)
             }
-        }
         """
         val findings = rule.compileAndLintWithContext(env, code)
         findings shouldHaveSize 0
     }
-
-
-    @Test
-    fun `no report launch in supervisor scope`() {
-        val code = """
-        import kotlinx.coroutines.GlobalScope
-        import kotlinx.coroutines.CoroutineScope
-        import kotlinx.coroutines.Dispatchers
-
-        suspend fun loadInfo() {
-            supervisorScope {
-                launch {}
-                async {}
-            }
-        }
-        """
-        val findings = rule.compileAndLintWithContext(env, code)
-        findings shouldHaveSize 0
-    }
-
 }
