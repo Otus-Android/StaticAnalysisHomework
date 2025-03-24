@@ -10,6 +10,7 @@ import io.gitlab.arturbosch.detekt.api.Severity
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
+import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
 class GlobalScopeRule(config: Config) : Rule(config) {
     override val issue: Issue = Issue(
@@ -26,7 +27,7 @@ class GlobalScopeRule(config: Config) : Rule(config) {
 
         if (qualifiedExpression != null) {
             val receiver = qualifiedExpression.receiverExpression as? KtNameReferenceExpression
-            val methodName = qualifiedExpression.selectorExpression?.text
+            val methodName = qualifiedExpression.selectorExpression?.referenceExpression()?.text
 
             if (receiver?.text == "GlobalScope" && methodName in listOf("launch", "async")) {
                 report(

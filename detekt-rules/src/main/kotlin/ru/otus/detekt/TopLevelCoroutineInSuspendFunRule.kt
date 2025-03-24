@@ -11,8 +11,10 @@ import io.gitlab.arturbosch.detekt.rules.fqNameOrNull
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtFunction
+import org.jetbrains.kotlin.psi.psiUtil.getCallNameExpression
+import org.jetbrains.kotlin.psi.psiUtil.hasSuspendModifier
 import org.jetbrains.kotlin.psi.psiUtil.parents
-import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
+import org.jetbrains.kotlin.resolve.calls.util.getType
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 import org.jetbrains.kotlin.utils.IDEAPluginsCompatibilityAPI
@@ -30,23 +32,18 @@ class TopLevelCoroutineInSuspendFunRule(config: Config) : Rule(config) {
     override fun visitCallExpression(expression: KtCallExpression) {
         super.visitCallExpression(expression)
 
-        val containingFunction = expression.containingFunction()
-        if (containingFunction?.isSuspend() == true) {
-            val resolvedCall = expression.getResolvedCall(bindingContext) ?: return
-            val functionName = resolvedCall.resultingDescriptor.name.asString()
+        if (expression.containingFunction()?.modifierList?.hasSuspendModifier() == false) return
 
-            if (functionName in listOf("launch", "async")) {
-                val receiverType = resolvedCall.extensionReceiver?.type
-                if (receiverType != null && isCoroutineScope(receiverType)) {
-                    val parent = expression.parent
-                    if (parent is KtDotQualifiedExpression &&
-                        parent.receiverExpression.text in listOf(
-                            "coroutineScope",
-                            "supervisorScope"
-                        )
-                    ) return
+        if (expression.getCallNameExpression()?.text in listOf("launch", "async")) {
+            val parent = expression.parent
+            if (parent is KtDotQualifiedExpression) {
 
+                val receiverType = parent.receiverExpression.getType(bindingContext)
+                if (receiverType != null
+                    && (isCoroutineScope(receiverType) || receiverType.fqNameOrNull()
+                        ?.asString() == "kotlinx.coroutines.CoroutineScope")
 
+                ) {
                     report(
                         CodeSmell(
                             issue,
@@ -65,7 +62,4 @@ class TopLevelCoroutineInSuspendFunRule(config: Config) : Rule(config) {
 
     private fun KtCallExpression.containingFunction(): KtFunction? =
         this.parents.filterIsInstance<KtFunction>().firstOrNull()
-
-    private fun KtFunction.isSuspend(): Boolean =
-        this.modifierList?.text == "suspend"
 }

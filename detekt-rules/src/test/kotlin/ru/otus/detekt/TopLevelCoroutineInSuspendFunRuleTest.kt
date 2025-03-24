@@ -46,6 +46,24 @@ class TopLevelCoroutineInSuspendFunRuleTest(private val env: KotlinCoreEnvironme
     }
 
     @Test
+    fun `should not report CoroutineScope launch`() {
+        val code = """
+            import kotlinx.coroutines.CoroutineScope
+            import kotlinx.coroutines.Dispatchers
+            import kotlinx.coroutines.launch
+
+            fun example() {
+                CoroutineScope(Dispatchers.Default).launch {
+                    println("This is a coroutine")
+                }
+            }
+        """.trimIndent()
+
+        val findings = rule.compileAndLintWithContext(env, code)
+        findings shouldHaveSize 0
+    }
+
+    @Test
     fun `should not report coroutineScope builder inside suspend function`() {
         val code = """
             import kotlinx.coroutines.CoroutineScope
