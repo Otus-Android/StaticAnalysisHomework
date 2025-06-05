@@ -1,19 +1,19 @@
 [versions]
-kotlin = "2.0.21"
-detekt = "1.23.7"
+kotlin = "2.1.21"
+detekt = "1.23.8"
 kotest = "5.9.1"
 jupiter = "5.11.4"
 jreleaser = "1.16.0"
-agp = "8.5.1"
+agp = "8.9.1"
 lint = '31.4.1'
 junit = "4.13.2"
 runner = "1.0.2"
-espressoCore = "3.0.2"
+espressoCore = "3.6.1"
 appcompatV7 = "28.0.0"
-coreKtx = "1.15.0"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.0"
-composeBom = "2024.04.01"
+coreKtx = "1.16.0"
+lifecycleRuntimeKtx = "2.9.1"
+activityCompose = "1.10.1"
+composeBom = "2025.06.00"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

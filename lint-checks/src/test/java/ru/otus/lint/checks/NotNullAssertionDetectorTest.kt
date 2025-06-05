@@ -20,19 +20,19 @@ import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.Issue
 
 class NotNullAssertionDetectorTest : LintDetectorTest() {
-  override fun getDetector(): Detector {
-    return NotNullAssertionDetector()
-  }
+    override fun getDetector(): Detector {
+        return NotNullAssertionDetector()
+    }
 
-  override fun getIssues(): List<Issue> {
-    return listOf(NotNullAssertionDetector.ISSUE)
-  }
+    override fun getIssues(): List<Issue> {
+        return listOf(NotNullAssertionDetector.ISSUE)
+    }
 
-  fun testDocumentationExample() {
-    lint()
-      .files(
-        kotlin(
-            """
+    fun testDocumentationExample() {
+        lint()
+            .files(
+                kotlin(
+                    """
             package test.pkg
 
             fun test(s: String?, t: String) {
@@ -41,12 +41,13 @@ class NotNullAssertionDetectorTest : LintDetectorTest() {
               t!!.plus(t)
             }
             """
-          )
-          .indented()
-      )
-      .run()
-      .expect(
-        """
+                )
+                    .indented()
+            )
+            .allowMissingSdk()
+            .run()
+            .expect(
+                """
         src/test/pkg/test.kt:5: Warning: Do not use !! [NotNullAssertion]
           s!!.plus(s)
           ~~~
@@ -55,6 +56,6 @@ class NotNullAssertionDetectorTest : LintDetectorTest() {
           ~~~
         0 errors, 2 warnings
         """
-      )
-  }
+            )
+    }
 }

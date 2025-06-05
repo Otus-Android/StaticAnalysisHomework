@@ -31,53 +31,53 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UPostfixExpression
 
 class NotNullAssertionDetector : Detector(), SourceCodeScanner {
-  companion object Issues {
-    private val IMPLEMENTATION =
-      Implementation(NotNullAssertionDetector::class.java, Scope.JAVA_FILE_SCOPE)
+    companion object Issues {
+        private val IMPLEMENTATION =
+            Implementation(NotNullAssertionDetector::class.java, Scope.JAVA_FILE_SCOPE)
 
-    @JvmField
-    val ISSUE =
-      Issue.create(
-        id = "NotNullAssertion",
-        briefDescription = "Avoid `!!`",
-        explanation =
-          """
+        @JvmField
+        val ISSUE =
+            Issue.create(
+                id = "NotNullAssertion",
+                briefDescription = "Avoid `!!`",
+                explanation =
+                    """
           Do not use the `!!` operator. It can lead to null pointer exceptions. \
           Please use the `?` operator instead, or assign to a local variable with \
           `?:` initialization if necessary.
           """,
-        category = Category.CORRECTNESS,
-        priority = 6,
-        severity = Severity.WARNING,
-        implementation = IMPLEMENTATION,
-      )
-  }
-
-  override fun getApplicableUastTypes(): List<Class<out UElement>>? {
-    return listOf(UPostfixExpression::class.java)
-  }
-
-  override fun createUastHandler(context: JavaContext): UElementHandler {
-    return object : UElementHandler() {
-      override fun visitPostfixExpression(node: UPostfixExpression) {
-        if (node.operator.text == "!!") {
-          var message = "Do not use `!!`"
-
-          // Kotlin Analysis API example
-          val sourcePsi = node.operand.sourcePsi
-          if (sourcePsi is KtExpression) {
-            analyze(sourcePsi) {
-              val type = sourcePsi.getKtType()
-              if (type != null && !type.canBeNull) {
-                message += " -- it's not even needed here"
-              }
-            }
-          }
-
-          val incident = Incident(ISSUE, node, context.getLocation(node), message)
-          context.report(incident)
-        }
-      }
+                category = Category.CORRECTNESS,
+                priority = 6,
+                severity = Severity.WARNING,
+                implementation = IMPLEMENTATION,
+            )
     }
-  }
+
+    override fun getApplicableUastTypes(): List<Class<out UElement>>? {
+        return listOf(UPostfixExpression::class.java)
+    }
+
+    override fun createUastHandler(context: JavaContext): UElementHandler {
+        return object : UElementHandler() {
+            override fun visitPostfixExpression(node: UPostfixExpression) {
+                if (node.operator.text == "!!") {
+                    var message = "Do not use `!!`"
+
+                    // Kotlin Analysis API example
+                    val sourcePsi = node.operand.sourcePsi
+                    if (sourcePsi is KtExpression) {
+                        analyze(sourcePsi) {
+                            val type = sourcePsi.getKtType()
+                            if (type != null && !type.canBeNull) {
+                                message += " -- it's not even needed here"
+                            }
+                        }
+                    }
+
+                    val incident = Incident(ISSUE, node, context.getLocation(node), message)
+                    context.report(incident)
+                }
+            }
+        }
+    }
 }

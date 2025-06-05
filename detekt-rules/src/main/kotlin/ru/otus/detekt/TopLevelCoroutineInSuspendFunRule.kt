@@ -13,4 +13,6 @@ class TopLevelCoroutineInSuspendFunRule(config: Config) : Rule(config) {
         description = "Avoid running top level coroutines inside suspend functions",
         debt = Debt.FIVE_MINS
     )
+
+    // TODO
 }

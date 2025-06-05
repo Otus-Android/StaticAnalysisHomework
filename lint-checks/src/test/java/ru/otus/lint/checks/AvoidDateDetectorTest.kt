@@ -20,25 +20,25 @@ import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.Issue
 
 class AvoidDateDetectorTest : LintDetectorTest() {
-  override fun getDetector(): Detector = AvoidDateDetector()
+    override fun getDetector(): Detector = AvoidDateDetector()
 
-  override fun getIssues(): List<Issue> = listOf(AvoidDateDetector.ISSUE)
+    override fun getIssues(): List<Issue> = listOf(AvoidDateDetector.ISSUE)
 
-  fun testDocumentationExample() {
-    lint()
-      .files(
-        kotlin(
-            """
+    fun testDocumentationExample() {
+        lint()
+            .files(
+                kotlin(
+                    """
               package test.pkg
               import java.util.Date
               fun test() {
                 val date = Date()
               }
               """
-          )
-          .indented(),
-        kotlin(
-            """
+                )
+                    .indented(),
+                kotlin(
+                    """
               package test.pkg
               import java.util.Calendar
 
@@ -46,13 +46,13 @@ class AvoidDateDetectorTest : LintDetectorTest() {
                   val calendar = Calendar.getInstance()
               }
               """
-          )
-          .indented(),
-      )
-      .allowMissingSdk()
-      .run()
-      .expect(
-        """
+                )
+                    .indented(),
+            )
+            .allowMissingSdk()
+            .run()
+            .expect(
+                """
         src/test/pkg/test.kt:4: Error: Don't use Date; use java.time.* instead [OldDate]
           val date = Date()
                      ~~~~~~
@@ -61,9 +61,9 @@ class AvoidDateDetectorTest : LintDetectorTest() {
                            ~~~~~~~~~~~~~~~~~~~~~~
         2 errors, 0 warnings
         """
-      )
-      .expectFixDiffs(
-        """
+            )
+            .expectFixDiffs(
+                """
         Fix for src/test/pkg/test.kt line 4: Replace with java.time.LocalTime.now():
         @@ -2 +2
         + import java.time.LocalTime
@@ -83,6 +83,6 @@ class AvoidDateDetectorTest : LintDetectorTest() {
         -   val date = Date()
         +   val date = LocalDateTime.now()
         """
-      )
-  }
+            )
+    }
 }
