@@ -10,3 +10,9 @@ naming:
 OtusRuleSet:
   ComposeModifierRule:
     active: true
+  GlobalScopeRule:
+    active: true
+  TopLevelCoroutineInSuspendFunRule:
+    active: true
+  CoroutineWithoutDispatcherRule:
+    active: true

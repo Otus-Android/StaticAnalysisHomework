@@ -5,3 +5,5 @@ OtusRuleSet:
     active: true
   TopLevelCoroutineInSuspendFunRule:
     active: true
+  CoroutineWithoutDispatcherRule:
+    active: true
