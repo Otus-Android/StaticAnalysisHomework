@@ -1,11 +1,11 @@
 package ru.otus.example
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class SampleViewModel : ViewModel() {
@@ -16,8 +16,16 @@ class SampleViewModel : ViewModel() {
     }
 
     suspend fun coroutineLaunchInSuspendViolation() {
-        viewModelScope.launch {
+        val globalScope = GlobalScope
+        globalScope.launch {  }
+        GlobalScope.async {
 
+        }
+        coroutineScope {
+
+        }
+        viewModelScope.launch {
+            println()
         }
     }
 }
