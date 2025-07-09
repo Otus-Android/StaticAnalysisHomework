@@ -15,6 +15,7 @@ dependencies {
     testImplementation(libs.detekt.test)
     testImplementation(libs.kotest)
     testImplementation(libs.jupiter)
+    testImplementation(kotlin("test"))
 }
 
 java {
