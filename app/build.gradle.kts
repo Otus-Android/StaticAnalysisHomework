@@ -70,6 +70,10 @@ android {
     }
 }
 
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "21"
+}
+
 dependencies {
     detektPlugins(project(":detekt-rules"))
     lintChecks(project(":lint-checks"))
