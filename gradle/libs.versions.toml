@@ -1,6 +1,7 @@
 [versions]
 kotlin = "2.1.21"
 detekt = "1.23.8"
+coroutines = "1.10.2"
 kotest = "5.9.1"
 jupiter = "5.11.4"
 jreleaser = "1.16.0"
@@ -32,6 +33,7 @@ lint-cli = { group = "com.android.tools.lint", name = "lint", version.ref = "lin
 lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 detekt-api = { module = "io.gitlab.arturbosch.detekt:detekt-api", version.ref = "detekt" }
 detekt-test = { module = "io.gitlab.arturbosch.detekt:detekt-test", version.ref = "detekt" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiter" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
