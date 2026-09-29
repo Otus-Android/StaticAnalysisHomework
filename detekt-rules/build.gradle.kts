@@ -13,6 +13,7 @@ dependencies {
     testImplementation(libs.androidx.ui) // Required for type resolution
 
     testImplementation(libs.detekt.test)
+    testImplementation(libs.kotlinx.coroutines.core) // Required for type resolution
     testImplementation(libs.kotest)
     testImplementation(libs.jupiter)
 }

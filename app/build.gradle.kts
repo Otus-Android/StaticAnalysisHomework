@@ -1,3 +1,6 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.api.attributes.Attribute
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +12,19 @@ detekt {
     toolVersion = libs.versions.detekt.get()
     config.setFrom(file("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
+}
+
+tasks.withType<Detekt>().configureEach {
+    // Enables type resolution for custom rules on AGP modules:
+    // raw debugCompileClasspath contains AARs which the Kotlin analyzer cannot read,
+    // so classes are requested via AGP artifact transforms (android-classes-jar).
+    val classesJars = configurations["debugCompileClasspath"].incoming.artifactView {
+        attributes {
+            attribute(Attribute.of("artifactType", String::class.java), "android-classes-jar")
+        }
+        lenient(true)
+    }
+    classpath.setFrom(classesJars.files, android.bootClasspath)
 }
 
 android {
